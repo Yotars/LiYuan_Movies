@@ -7,7 +7,7 @@ import lombok.Data;
  * (User)实体类
  *
  * @author makejava
- * @since 2024-01-05 01:32:08
+ * @since 2024-01-05 01:52:20
  */
 @Data
 public class UserFind {
