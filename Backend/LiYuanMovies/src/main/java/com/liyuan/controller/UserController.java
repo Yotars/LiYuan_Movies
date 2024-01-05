@@ -3,6 +3,7 @@ package com.liyuan.controller;
 import com.liyuan.db.entity.User;
 import com.liyuan.db.find.UserFind;
 import com.liyuan.db.service.UserService;
+import com.liyuan.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService s;
+
+    private TokenUtil tokenUtil = new TokenUtil();
 
     @GetMapping
     public Map list(UserFind find) {
@@ -39,6 +42,16 @@ public class UserController {
     @DeleteMapping
     public Map delete(User user) {
         return s.delete(user);
+    }
+
+    @PostMapping("/login")
+    public Map login(User user) {
+        return s.login(user);
+    }
+
+    @PostMapping("/isAdmin")
+    public Boolean isAdmin(String token) {
+        return tokenUtil.isAdmin(token);
     }
 }
 
