@@ -8,7 +8,7 @@ import java.sql.Date;
  * (User)实体类
  *
  * @author makejava
- * @since 2024-01-05 15:32:10
+ * @since 2024-01-05 16:31:28
  */
 @Data
 public class User {
