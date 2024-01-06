@@ -6,5 +6,7 @@ spring:
     password: 123456
 mybatis-plus:
   configuration:
+#    将查询语句打印到控制台
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    数据结果可以为空
     cell-setters-on-numlls: true

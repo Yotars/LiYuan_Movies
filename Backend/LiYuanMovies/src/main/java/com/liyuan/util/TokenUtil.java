@@ -7,11 +7,16 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.liyuan.db.entity.User;
 import org.springframework.stereotype.Component;
 
-
+/**
+*  token工具类
+*
+* @author Yotars
+* @since 2024-01-06 16:12:42
+*/
 @Component
 public class TokenUtil {
 
-    private String secretKey = "LiYuan_Movies";
+    private String secretKey = "LiYuanMovies";
 
     /**
      * 加密 token, 将 User 对像加密为 token
@@ -69,3 +74,4 @@ public class TokenUtil {
         return is;
     }
 }
+
