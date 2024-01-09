@@ -1,8 +1,10 @@
 package com.liyuan.util;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,9 +23,9 @@ public class MapUtil {
      * @param result {Object} 请求结果
      * @return map {Map} 封装的结果
      */
-    public Map<String, Object> outMap(String status, Object result) {
+    public Map<String, Object> outMap(String status, Page result, String message) {
 
-        return setMap(status, result);
+        return setMap(status, result, message);
     }
 
     /**
@@ -40,9 +42,8 @@ public class MapUtil {
         HashMap result = new HashMap<>();
         result.put("is", is);
         result.put("row", row);
-        result.put("message", message);
         
-        return setMap(status, result);
+        return setMap(status, result, message);
     }
 
     /**
@@ -53,13 +54,13 @@ public class MapUtil {
      * @param token {String} 加密的 token
      * @return map {Map} 封装的结果
      */
-    public Map<String, Object> outMap(String status, Boolean is, String token) {
+    public Map<String, Object> outMap(String status, Boolean is, String token, String message) {
 
         HashMap result = new HashMap<>();
         result.put("is", is);
         result.put("token", token);
 
-        return setMap(status, result);
+        return setMap(status, result, message);
     }
 
     /**
@@ -69,11 +70,12 @@ public class MapUtil {
      * @param result {Object} 结果
      * @return map {Map} 封装结果
      */
-    private Map<String, Object> setMap(String status, Object result) {
+    private Map<String, Object> setMap(String status, Object result, String message) {
         
         HashMap<String, Object> map = new HashMap<>();
         map.put("status", status);
         map.put("result", result);
+        map.put("message", message);
         
         return map;
     }

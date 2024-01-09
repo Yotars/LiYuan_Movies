@@ -26,7 +26,7 @@ public class UserService {
 
     private TokenUtil tokenUtil = new TokenUtil();
 
-    private MapUtil map = null;
+    private MapUtil map = new MapUtil();
 
     /**
      * 用户登陆
@@ -41,13 +41,12 @@ public class UserService {
                 .eq("username", user.getUsername())
                 .eq("password", user.getPassword());
 
-        map = new MapUtil();
-
         User u = m.selectOne(wrapper);
         boolean is = u.getUid() != null;
         String token = tokenUtil.getToken(u);
+        String message = "";
 
-        return map.outMap("200", is, token);
+        return map.outMap("200", is, token, message);
     }
 
     /**
@@ -73,9 +72,9 @@ public class UserService {
         MPJQueryWrapper wrapper = new MPJQueryWrapper<User>()
                 .select("*");
 
-        map = new MapUtil();
+        String message = "";
 
-        return map.outMap("200", m.selectJoinMapsPage(page,wrapper));
+        return map.outMap("200", m.selectJoinMapsPage(page,wrapper), message);
     }
 
     /**
@@ -135,8 +134,6 @@ public class UserService {
      * @return  map {Map} 删除的结果
      */
     public Map delete(User user) {
-
-        map = new MapUtil();
 
         boolean is = false;
         int row = 0;
