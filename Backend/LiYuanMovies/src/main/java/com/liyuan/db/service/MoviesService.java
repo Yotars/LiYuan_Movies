@@ -1,17 +1,18 @@
 package com.liyuan.db.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Movies;
+import com.liyuan.db.entity.Type;
 import com.liyuan.db.find.MoviesFind;
 import com.liyuan.db.mapper.MoviesMapper;
+import com.liyuan.db.mapper.TypeMapper;
 import com.liyuan.util.MapUtil;
-import com.liyuan.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 /**
  * (Movies)表服务层
@@ -25,6 +26,9 @@ public class MoviesService {
     @Autowired
     private MoviesMapper m;
 
+    @Autowired
+    private TypeMapper type;
+
     private MapUtil map =  new MapUtil();
 
     /**
@@ -34,21 +38,36 @@ public class MoviesService {
      * @return map {Map} 返回的结果
      */
     public Map list(MoviesFind find) {
-    
+
+//        创建一个分页对象
         Page page = new Page<>(find.getIndex(), find.getSize());
-        
+
+//        数据查询语句
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Movies>()
-                .select("*");
+                .select("*")
+                .like("mName", find.getMName())
+                .like("launchDate", find.getLaunchDate());
 
-        String arr[] = find.getType().split(",");
-
+//        将传过来的type进行拼接查询
+        String[]arr = find.getType().split(",");
         for (int i = 0; i < arr.length; i++) {
             wrapper.like("type", arr[i]);
         }
 
-        String message = "";
+        IPage p = m.selectJoinMapsPage(page,wrapper);
 
-        return map.outMap("200", m.selectJoinMapsPage(page,wrapper), message);
+        HashMap result = new HashMap<String, Object>();
+        result.put("records", p.getRecords());
+        result.put("current", p.getCurrent());
+        result.put("size", p.getSize());
+        result.put("pages", p.getPages());
+        result.put("total", p.getTotal());
+        result.put("types", types());
+
+//        查询信息
+        String message = "已查询到" + p.getTotal() +"条数据";
+
+        return map.outMap("200", result, message);
     }
 
     /**
@@ -64,6 +83,17 @@ public class MoviesService {
         String massage = "插入";
 
         row = m.insert(movies);
+
+        List<String> types = types();
+
+        String[]arr = movies.getType().split(",");
+        for (int i = 0; i < arr.length; i++) {
+            if (!types.contains(arr[i])) {
+                Type t = new Type();
+                t.setT(arr[i]);
+                type.insert(t);
+            }
+        }
 
         if (row != 0) {
             is = true;
@@ -124,5 +154,21 @@ public class MoviesService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 查询所有的 type
+     *
+     * @return types {Arrays} 返回的数据
+     */
+    public List<String> types() {
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Type>()
+                .select("*");
+        List list = type.selectMaps(wrapper);
+        String[]types = new String[list.size()];
+        for (int i = 0; i < types.length; i++) {
+            types[i] = list.get(i).toString().split("=")[1].split("}")[0];
+        }
+        return Arrays.asList(types);
     }
 }

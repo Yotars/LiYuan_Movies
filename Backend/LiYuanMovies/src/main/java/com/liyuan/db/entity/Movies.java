@@ -37,7 +37,7 @@ public class Movies {
     /**
      * 地区
      */
-    private String address;
+    private String area;
     /**
      * 语言
      */

@@ -1,10 +1,8 @@
 package com.liyuan.util;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +21,7 @@ public class MapUtil {
      * @param result {Object} 请求结果
      * @return map {Map} 封装的结果
      */
-    public Map<String, Object> outMap(String status, Page result, String message) {
+    public Map<String, Object> outMap(String status, Object result, String message) {
 
         return setMap(status, result, message);
     }
@@ -73,10 +71,10 @@ public class MapUtil {
     private Map<String, Object> setMap(String status, Object result, String message) {
         
         HashMap<String, Object> map = new HashMap<>();
-        map.put("status", status);
         map.put("result", result);
+        map.put("status", status);
         map.put("message", message);
-        
+
         return map;
     }
 }

@@ -15,4 +15,6 @@ public class MoviesFind {
     private Integer size;
     private String mName;
     private String type;
+    private String area;
+    private String launchDate;
 }
