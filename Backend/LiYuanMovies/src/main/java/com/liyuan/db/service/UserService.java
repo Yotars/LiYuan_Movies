@@ -42,7 +42,7 @@ public class UserService {
                 .eq("password", user.getPassword());
 
         User u = m.selectOne(wrapper);
-        boolean is = u.getUid() != null;
+        boolean is = u.getUId() != null;
         String token = tokenUtil.getToken(u);
         String message = "";
 

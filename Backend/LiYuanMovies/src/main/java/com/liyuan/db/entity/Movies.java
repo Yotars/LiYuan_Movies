@@ -6,14 +6,14 @@ import lombok.Data;
  * (Movies)实体类
  *
  * @author Yotars
- * @since 2024-01-09 15:10:33
+ * @since 2024-01-10 18:49:52
  */
 @Data
 public class Movies {
     /**
      * 电影id
      */
-    private Integer mid;
+    private Integer mId;
     /**
      * 电影名称
      */

@@ -28,7 +28,7 @@ public class TokenUtil {
 
         String token =  JWT
                 .create()
-                .withClaim("uid", user.getUid())
+                .withClaim("uId", user.getUId())
                 .withClaim("username", user.getUsername())
                 .withClaim("password", user.getPassword())
                 .withClaim("power", user.getPower())
@@ -50,12 +50,12 @@ public class TokenUtil {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secretKey))
                 .build().verify(token);
 
-        Claim uid = decodedJWT.getClaim("uid");
+        Claim uId = decodedJWT.getClaim("uId");
         Claim username = decodedJWT.getClaim("username");
         Claim password = decodedJWT.getClaim("password");
         Claim power = decodedJWT.getClaim("power");
 
-        user.setUid(uid.asInt());
+        user.setUId(uId.asInt());
         user.setUsername(username.asString());
         user.setPassword(password.asString());
         user.setPower(power.asInt());
