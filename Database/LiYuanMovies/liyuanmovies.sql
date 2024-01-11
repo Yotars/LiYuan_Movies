@@ -16,6 +16,31 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
+-- 创建表 info
+CREATE TABLE `info`  (
+  `uId` int NOT NULL COMMENT '用户id',
+  `nickname` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户昵称',
+  `head` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户头像',
+  `sex` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户性别',
+  `birth` date NULL DEFAULT NULL COMMENT '用户生日',
+  `address` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户地址',
+  `phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户手机号',
+  `mail` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
+  PRIMARY KEY (`uId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- 创建表 oder
+CREATE TABLE `oder`  (
+  `oId` int NOT NULL COMMENT '订单ID',
+  `uId` int NOT NULL COMMENT '用户ID',
+  `oNumber` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单编号',
+  `oDetails` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单详情',
+  `oMessage` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单信息',
+  `oDate` datetime NOT NULL COMMENT '订单创建时间',
+  `oStatus` tinyint NOT NULL COMMENT '订单状态: 0-待处理 1-已完成',
+  PRIMARY KEY (`oId`, `uId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 -- 创建表 movies
 CREATE TABLE `movies`  (
   `mid` int NOT NULL AUTO_INCREMENT COMMENT '电影id',
@@ -31,6 +56,31 @@ CREATE TABLE `movies`  (
   `IMDb` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IMDb',
   `Intro` varchar(999) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '简介',
   PRIMARY KEY (`mid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- 创建表 type
+CREATE TABLE `type`  (
+  `t` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电影类型'
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- 创建表 room
+CREATE TABLE `room`  (
+  `rId` int NOT NULL AUTO_INCREMENT COMMENT '放映厅id',
+  `rName` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '放映厅名称',
+  `mId` int NOT NULL COMMENT '电影id',
+  `start` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `sTotal` int NULL DEFAULT NULL COMMENT '座位总数',
+  `sRest` int NULL DEFAULT NULL COMMENT '剩余座位',
+  PRIMARY KEY (`rId`, `mId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- 创建表 seat
+CREATE TABLE `seat`  (
+  `sId` int NOT NULL AUTO_INCREMENT COMMENT '座位id',
+  `status` tinyint NULL DEFAULT NULL COMMENT '座位状态: 0-未选择 1-已选择',
+  `rId` int NOT NULL COMMENT '放映厅id',
+  PRIMARY KEY (`sId`, `rId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- 插入数据 user
