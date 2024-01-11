@@ -82,6 +82,3 @@ CREATE TABLE `seat`  (
   `rId` int NOT NULL COMMENT '放映厅id',
   PRIMARY KEY (`sId`, `rId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- 插入数据 user
-INSERT INTO `user` VALUES (1, 'root', '1234', 0);
