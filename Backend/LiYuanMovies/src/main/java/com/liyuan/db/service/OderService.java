@@ -4,14 +4,18 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Oder;
+import com.liyuan.db.entity.User;
 import com.liyuan.db.find.OderFind;
 import com.liyuan.db.mapper.OderMapper;
 import com.liyuan.util.MapUtil;
+import com.liyuan.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * (Oder)表服务层
@@ -25,6 +29,11 @@ public class OderService {
     @Autowired
     private OderMapper m;
 
+    @Autowired
+    private SeatService seat;
+
+    private TokenUtil tokenUtil = new TokenUtil();
+
     private MapUtil map = new MapUtil();
 
     /**
@@ -33,12 +42,17 @@ public class OderService {
      * @param find {OderFind} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map list(OderFind find) {
-    
+    public Map list(OderFind find, String token) {
+
         Page page = new Page<>(find.getIndex(), find.getSize());
+
+        User user = tokenUtil.parseToken(token);
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Oder>()
                 .select("*");
+        if (find.getUId() != null) {
+            wrapper.eq("uId", find.getUId());
+        }
                 
         IPage p = m.selectJoinMapsPage(page,wrapper);
 
@@ -58,16 +72,92 @@ public class OderService {
      * 插入 Oder 表数据
      *
      * @param oder {Oder} 传入的数据
-     * @return  map {Map} 返回的结果
+     * @return map {Map} 返回的结果
      */
-    public Map insert(Oder oder) {
+    public Map insert(Oder oder, String token) {
 
         boolean is = false;
         int row = 0;
         String massage = "插入";
 
-        row = m.insert(oder);
+        String[]number = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
 
+        User user = tokenUtil.parseToken(token);
+
+        oder.setOStatus(1);
+        oder.setONumber(rNumber());
+        oder.setUId(user.getUId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        oder.setODate(sdf.format(System.currentTimeMillis()));
+        String[] sIds = oder.getODetails().split(",");
+        Map seats = null;
+        String oMessage = "一共有"+ sIds.length +"张票, ";
+        for (int i = 0; i < sIds.length; i++) {
+            seats = seat.status(Integer.valueOf(sIds[i]), 1);
+            oMessage += seats.get("rName")+
+                    ": " + number[(int) seats.get("l")] +
+                    "排" + number[(int) seats.get("r")] + "列, ";
+        }
+        oder.setOMessage(oMessage);
+
+        row = m.insert(oder);
+        if (row != 0) {
+            is = true;
+            massage += "成功";
+        }
+        else {
+            is = false;
+            massage += "失败";
+        }
+        return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param oder {Oder} 传入的数据
+     * @return map {Map} 返回的结果
+     */
+    public Map cancel(Oder oder, String token) {
+
+        boolean is = false;
+        int row = 0;
+        String massage = "修改";
+
+        oder.setOStatus(0);
+
+        String[] sIds = oder.getODetails().split(",");
+        for (int i = 0; i < sIds.length; i++) {
+            seat.status(Integer.valueOf(sIds[i]), 0);
+        }
+
+        row = m.updateById(oder);
+        if (row != 0) {
+            is = true;
+            massage += "成功";
+        }
+        else {
+            is = false;
+            massage += "失败";
+        }
+        return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 完成订单
+     *
+     * @param oder {Oder} 传入的数据
+     * @return map {Map} 返回的结果
+     */
+    public Map done(Oder oder) {
+
+        boolean is = false;
+        int row = 0;
+        String massage = "修改";
+
+        oder.setOStatus(3);
+
+        row = m.updateById(oder);
         if (row != 0) {
             is = true;
             massage += "成功";
@@ -108,7 +198,7 @@ public class OderService {
      * 删除 Oder 表数据
      *
      * @param oder {Oder} 传入的数据
-     * @return  map {Map} 返回的结果
+     * @return map {Map} 返回的结果
      */
     public Map delete(Oder oder) {
 
@@ -119,6 +209,10 @@ public class OderService {
         row = m.deleteById(oder);
 
         if (row != 0) {
+            String[] sIds = oder.getODetails().split(",");
+            for (int i = 0; i < sIds.length; i++) {
+                seat.status(Integer.valueOf(sIds[i]), 0);
+            }
             is = true;
             massage += "成功";
         }
@@ -127,5 +221,25 @@ public class OderService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 生成随机订单号
+     *
+     * @return rNumber {String} 生成的订单号
+     */
+    private String rNumber() {
+        Random random = new Random();
+        String r = "LY" + (random.nextLong(10000000) + 10000000);
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Oder>()
+                .select("*")
+                .eq("oNumber", r);
+
+        if (m.selectCount(wrapper) == 0) {
+            return r;
+        }
+        else {
+            return rNumber();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.liyuan.db.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,6 +15,7 @@ public class User {
     /**
      * 用户id
      */
+    @TableId(value = "uId", type = IdType.AUTO)
     private Integer uId;
     /**
      * 用户名

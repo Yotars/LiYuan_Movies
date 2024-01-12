@@ -43,10 +43,9 @@ public class TokenUtil {
      * @param token {String} 传入 token
      * @return user {User} 返回解析后的 User 对象
      */
-    private User parseToken(String token) {
+    public User parseToken(String token) {
 
         User user = new User();
-
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secretKey))
                 .build().verify(token);
 

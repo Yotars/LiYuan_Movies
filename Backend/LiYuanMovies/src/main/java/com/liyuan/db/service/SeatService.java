@@ -1,7 +1,6 @@
 package com.liyuan.db.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Seat;
 import com.liyuan.db.find.SeatFind;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,22 +34,20 @@ public class SeatService {
      * @return map {Map} 返回的结果
      */
     public Map list(SeatFind find) {
-    
-        Page page = new Page<>(find.getIndex(), find.getSize());
-        
+
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Seat>()
                 .select("*");
+
+        if (find.getRId() != null) {
+            wrapper.eq("rId", find.getRId());
+        }
                 
-        IPage p = m.selectJoinMapsPage(page,wrapper);
+        List p = m.selectJoinMaps(wrapper);
 
         HashMap result = new HashMap<String, Object>();
-        result.put("records", p.getRecords());
-        result.put("current", p.getCurrent());
-        result.put("size", p.getSize());
-        result.put("pages", p.getPages());
-        result.put("total", p.getTotal());
+        result.put("records", p);
         
-        String message = "已查询到" + p.getTotal() +"条数据";
+        String message = "已查询到" + p.size() +"条数据";
 
         return map.outMap("200", result, message);
     }
@@ -127,5 +125,28 @@ public class SeatService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 修改座位状态
+     *
+     * @param sId {Integer} 座位id
+     * @param status {Integer} 座位状态
+     * @return seat {Seat} 返回修改后的 seat
+     */
+    public Map status(Integer sId, Integer status) {
+
+        UpdateWrapper<Seat> set = new UpdateWrapper<Seat>()
+                .eq("sId", sId)
+                .set("status", status);
+        m.update(set);
+
+        MPJQueryWrapper get = new MPJQueryWrapper<Seat>()
+                .select("t.*")
+                .select("r.rName")
+                .leftJoin("room r ON r.rId = t.rId")
+                .eq("sId", sId);
+
+        return m.selectJoinMap(get);
     }
 }

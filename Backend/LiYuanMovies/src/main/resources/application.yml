@@ -10,3 +10,5 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    数据结果可以为空
     cell-setters-on-numlls: true
+#    取消驼峰命名转换
+    map-underscore-to-camel-case: false

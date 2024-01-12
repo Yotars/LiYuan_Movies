@@ -2,13 +2,11 @@ package com.liyuan.db.entity;
 
 import lombok.Data;
 
-import java.sql.Date;
-
 /**
  * (Oder)实体类
  *
  * @author Yotars
- * @since 2024-01-11 15:45:06
+ * @since 2024-01-12 23:56:30
  */
 @Data
 public class Oder {
@@ -29,11 +27,15 @@ public class Oder {
      */
     private String oDetails;
     /**
+     * 订单信息
+     */
+    private String oMessage;
+    /**
      * 订单创建时间
      */
-    private Date oDate;
+    private String oDate;
     /**
-     * 订单状态: 0-待处理 1-已完成
+     * 订单状态: 0-已取消 1-待处理 2-已完成
      */
     private Integer oStatus;
 }

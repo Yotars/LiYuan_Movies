@@ -13,4 +13,5 @@ import lombok.Data;
 public class OderFind {
     private Integer index;
     private Integer size;
+    private Integer uId;
 }

@@ -40,7 +40,7 @@ public class OderController {
      * 插入 Oder 表数据
      *
      * @param oder {Oder} 传入的数据
-     * @return  map {Map} 返回的结果
+     * @return map {Map} 返回的结果
      * {
      *   "status":"200",
      *   "result":
@@ -52,10 +52,50 @@ public class OderController {
      * }
      */
     @PostMapping
-    public Map insert(Oder oder) {
-        return s.insert(oder);
+    public Map insert(Oder oder, String token) {
+        return s.insert(oder, token);
     }
-    
+
+    /**
+     * 取消订单
+     *
+     * @param oder {Oder} 传入的数据
+     * @return map {Map} 返回的结果
+     * {
+     *   "status":"200",
+     *   "result":
+     *   {
+     *     "is": "结果",
+     *     "row": "条数",
+     *     "message": "信息"
+     *   }
+     * }
+     */
+    @PostMapping("/cancel")
+    public Map cancel(Oder oder, String token) {
+        return s.cancel(oder, token);
+    }
+
+    /**
+     * 完成订单
+     *
+     * @param oder {Oder} 传入的数据
+     * @return map {Map} 返回的结果
+     * {
+     *   "status":"200",
+     *   "result":
+     *   {
+     *     "is": "结果",
+     *     "row": "条数",
+     *     "message": "信息"
+     *   }
+     * }
+     */
+    @PostMapping("/done")
+    public Map done(Oder oder) {
+        return s.done(oder);
+    }
+
     /**
      * 修改 Oder 表数据
      *
@@ -70,7 +110,6 @@ public class OderController {
      *       "message": "信息"
      *     }
      *   }
-     *
      */
     @PutMapping
     public Map update(Oder oder) {
