@@ -164,6 +164,7 @@ public class RoomService {
                 .set("rest", room.getRTotal() - count);
         m.update(update);
     }
+
     /**
      * 检查命名是否已存在
      *
