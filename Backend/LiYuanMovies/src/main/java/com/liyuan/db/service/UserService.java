@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
-import com.liyuan.db.entity.Info;
 import com.liyuan.db.entity.User;
 import com.liyuan.db.find.UserFind;
 import com.liyuan.db.mapper.UserMapper;

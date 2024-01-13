@@ -1,7 +1,6 @@
 package com.liyuan.db.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Info;
 import com.liyuan.db.find.InfoFind;
