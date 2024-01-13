@@ -1,5 +1,7 @@
 package com.liyuan.db.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
@@ -38,7 +40,9 @@ public class RoomService {
         Page page = new Page<>(find.getIndex(), find.getSize());
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Room>()
-                .select("*");
+                .select("t.*, m.mName")
+                .leftJoin("movies m ON t.mId = m.mId")
+                .like("m.mName", find.getMName());
                 
         IPage p = m.selectJoinMapsPage(page,wrapper);
 
@@ -66,15 +70,22 @@ public class RoomService {
         int row = 0;
         String massage = "插入";
 
-        row = m.insert(room);
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
-        }
-        else {
+        if (checkName(room.getRId(), room.getRName())) {
+            row = 0;
             is = false;
-            massage += "失败";
+            massage = "名称已存在";
+        }
+        else  {
+            row = m.insert(room);
+
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -91,15 +102,22 @@ public class RoomService {
         int row = 0;
         String massage = "修改";
 
-        row = m.updateById(room);
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(room.getRId(), room.getRName())) {
+            row = 0;
+            is = false;
+            massage = "名称已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.updateById(room);
+
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -127,5 +145,37 @@ public class RoomService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 修改剩余座位数
+     *
+     * @param count {Long} 已占用座位数
+     * @param rId {int} 放映厅id
+     */
+    public void rest(Long count, int rId) {
+        QueryWrapper query = new QueryWrapper<Room>()
+                .select("*")
+                .eq("rId", rId);
+        Room room = m.selectOne(query);
+
+        UpdateWrapper update = new UpdateWrapper<Room>()
+                .eq("rId", rId)
+                .set("rest", room.getRTotal() - count);
+        m.update(update);
+    }
+    /**
+     * 检查命名是否已存在
+     *
+     * @param id {Integer} id
+     * @param name {String} name
+     * @return checkName {Boolean} 检查结果
+     */
+    private Boolean checkName(Integer id, String name) {
+        QueryWrapper wrapper = new QueryWrapper<Room>()
+                .select("*")
+                .ne("rId", id)
+                .eq("rName", name);
+        return m.selectMaps(wrapper).size() != 0;
     }
 }

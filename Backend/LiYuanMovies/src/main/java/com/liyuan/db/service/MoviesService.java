@@ -1,5 +1,6 @@
 package com.liyuan.db.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
@@ -82,26 +83,32 @@ public class MoviesService {
         int row = 0;
         String massage = "插入";
 
-        row = m.insert(movies);
-
-        List<String> types = types();
-
-        String[]arr = movies.getType().split(",");
-        for (int i = 0; i < arr.length; i++) {
-            if (!types.contains(arr[i])) {
-                Type t = new Type();
-                t.setT(arr[i]);
-                type.insert(t);
-            }
-        }
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(movies.getMId(), movies.getMName())) {
+            row = 0;
+            is = false;
+            massage = "名称已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.insert(movies);
+
+            List<String> types = types();
+
+            String[]arr = movies.getType().split(",");
+            for (int i = 0; i < arr.length; i++) {
+                if (!types.contains(arr[i])) {
+                    Type t = new Type();
+                    t.setT(arr[i]);
+                    type.insert(t);
+                }
+            }
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -118,15 +125,22 @@ public class MoviesService {
         int row = 0;
         String massage = "修改";
 
-        row = m.updateById(movies);
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(movies.getMId(), movies.getMName())) {
+            row = 0;
+            is = false;
+            massage = "名称已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.updateById(movies);
+
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -170,5 +184,20 @@ public class MoviesService {
             types[i] = list.get(i).toString().split("=")[1].split("}")[0];
         }
         return Arrays.asList(types);
+    }
+
+    /**
+     * 检查命名是否已存在
+     *
+     * @param id {Integer} id
+     * @param name {String} name
+     * @return checkName {Boolean} 检查结果
+     */
+    private Boolean checkName(Integer id, String name) {
+        QueryWrapper wrapper = new QueryWrapper<Movies>()
+                .select("*")
+                .ne("mId", id)
+                .eq("mName", name);
+        return m.selectMaps(wrapper).size() != 0;
     }
 }

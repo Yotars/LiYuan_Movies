@@ -1,7 +1,7 @@
 package com.liyuan.db.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Info;
 import com.liyuan.db.find.InfoFind;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * (Info)表服务层
@@ -34,22 +35,17 @@ public class InfoService {
      * @return map {Map} 返回的结果
      */
     public Map list(InfoFind find) {
-    
-        Page page = new Page<>(find.getIndex(), find.getSize());
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Info>()
-                .select("*");
+                .select("*")
+                .eq("uId", find.getUId());
                 
-        IPage p = m.selectJoinMapsPage(page,wrapper);
+        Map p = m.selectJoinMap(wrapper);
 
         HashMap result = new HashMap<String, Object>();
-        result.put("records", p.getRecords());
-        result.put("current", p.getCurrent());
-        result.put("size", p.getSize());
-        result.put("pages", p.getPages());
-        result.put("total", p.getTotal());
+        result.put("records", p);
         
-        String message = "已查询到" + p.getTotal() +"条数据";
+        String message = "已查询到1条数据";
 
         return map.outMap("200", result, message);
     }
@@ -57,15 +53,18 @@ public class InfoService {
     /**
      * 插入 Info 表数据
      *
-     * @param info {Info} 传入的数据
+     * @param uId {Integer} 传入的数据
      * @return  map {Map} 返回的结果
      */
-    public Map insert(Info info) {
+    public Map insert(Integer uId) {
 
         boolean is = false;
         int row = 0;
         String massage = "插入";
 
+        Info info = new Info();
+        info.setUId(uId);
+        info.setNickname(rName());
         row = m.insert(info);
 
         if (row != 0) {
@@ -91,15 +90,21 @@ public class InfoService {
         int row = 0;
         String massage = "修改";
 
-        row = m.updateById(info);
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(info.getUId(), info.getNickname())) {
+            row = 0;
+            is = false;
+            massage = "命名已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.updateById(info);
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -127,5 +132,40 @@ public class InfoService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 生成随机用户名
+     *
+     * @return rName {String} 返回的用户名
+     */
+    private String rName() {
+        Random random = new Random();
+        String r = "新用户" + (random.nextLong(100000000) + 100000000);
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Info>()
+                .select("*")
+                .eq("nickname", r);
+
+        if (m.selectCount(wrapper) == 0) {
+            return r;
+        }
+        else {
+            return rName();
+        }
+    }
+
+    /**
+     * 检查命名是否已存在
+     *
+     * @param id {Integer} id
+     * @param name {String} name
+     * @return checkName {Boolean} 检查结果
+     */
+    private Boolean checkName(Integer id, String name) {
+        QueryWrapper wrapper = new QueryWrapper<Info>()
+                .select("*")
+                .ne("uId", id)
+                .eq("nickname", name);
+        return m.selectMaps(wrapper).size() != 0;
     }
 }

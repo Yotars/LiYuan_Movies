@@ -35,26 +35,6 @@ public class InfoController {
     public Map list(InfoFind find) {
         return s.list(find);
     }
-
-    /**
-     * 插入 Info 表数据
-     *
-     * @param info {Info} 传入的数据
-     * @return  map {Map} 返回的结果
-     * {
-     *   "status":"200",
-     *   "result":
-     *   {
-     *     "is": "插入的结果",
-     *     "row": "插入的条数",
-     *     "message": "信息"
-     *   }
-     * }
-     */
-    @PostMapping
-    public Map insert(Info info) {
-        return s.insert(info);
-    }
     
     /**
      * 修改 Info 表数据

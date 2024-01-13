@@ -1,5 +1,6 @@
 package com.liyuan.db.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.liyuan.db.entity.Seat;
@@ -24,6 +25,9 @@ public class SeatService {
 
     @Autowired
     private SeatMapper m;
+
+    @Autowired
+    private RoomService room;
 
     private MapUtil map = new MapUtil();
 
@@ -147,6 +151,17 @@ public class SeatService {
                 .leftJoin("room r ON r.rId = t.rId")
                 .eq("sId", sId);
 
-        return m.selectJoinMap(get);
+        Map map = m.selectJoinMap(get);
+
+        QueryWrapper count = new QueryWrapper<Seat>()
+                .select("*")
+                .eq("rId", map.get("rId"))
+                .eq("status", 1);
+
+        Long counts = m.selectCount(count);
+
+        room.rest(counts, (Integer) map.get("rId"));
+
+        return map;
     }
 }

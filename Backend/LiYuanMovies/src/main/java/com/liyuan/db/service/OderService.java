@@ -32,8 +32,6 @@ public class OderService {
     @Autowired
     private SeatService seat;
 
-    private TokenUtil tokenUtil = new TokenUtil();
-
     private MapUtil map = new MapUtil();
 
     /**
@@ -42,14 +40,13 @@ public class OderService {
      * @param find {OderFind} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map list(OderFind find, String token) {
+    public Map list(OderFind find) {
 
         Page page = new Page<>(find.getIndex(), find.getSize());
-
-        User user = tokenUtil.parseToken(token);
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Oder>()
-                .select("*");
+                .select("*")
+                .like("oNumber", find.getONumber());
         if (find.getUId() != null) {
             wrapper.eq("uId", find.getUId());
         }
@@ -74,7 +71,7 @@ public class OderService {
      * @param oder {Oder} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map insert(Oder oder, String token) {
+    public Map insert(Oder oder) {
 
         boolean is = false;
         int row = 0;
@@ -82,11 +79,9 @@ public class OderService {
 
         String[]number = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
 
-        User user = tokenUtil.parseToken(token);
-
         oder.setOStatus(1);
         oder.setONumber(rNumber());
-        oder.setUId(user.getUId());
+        oder.setUId(oder.getUId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         oder.setODate(sdf.format(System.currentTimeMillis()));
         String[] sIds = oder.getODetails().split(",");
@@ -118,7 +113,7 @@ public class OderService {
      * @param oder {Oder} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map cancel(Oder oder, String token) {
+    public Map cancel(Oder oder) {
 
         boolean is = false;
         int row = 0;

@@ -14,4 +14,5 @@ public class OderFind {
     private Integer index;
     private Integer size;
     private Integer uId;
+    private String oNumber;
 }

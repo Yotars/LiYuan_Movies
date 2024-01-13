@@ -11,6 +11,5 @@ import lombok.Data;
  */
 @Data
 public class InfoFind {
-    private Integer index;
-    private Integer size;
+    private Integer uId;
 }

@@ -1,7 +1,10 @@
 package com.liyuan.db.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
+import com.liyuan.db.entity.Info;
 import com.liyuan.db.entity.User;
 import com.liyuan.db.find.UserFind;
 import com.liyuan.db.mapper.UserMapper;
@@ -10,6 +13,7 @@ import com.liyuan.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,6 +27,9 @@ public class UserService {
 
     @Autowired
     private UserMapper m;
+
+    @Autowired
+    private InfoService info;
 
     private TokenUtil tokenUtil = new TokenUtil();
 
@@ -72,9 +79,18 @@ public class UserService {
         MPJQueryWrapper wrapper = new MPJQueryWrapper<User>()
                 .select("*");
 
-        String message = "";
+        IPage p = m.selectJoinMapsPage(page,wrapper);
 
-        return map.outMap("200", m.selectJoinMapsPage(page,wrapper), message);
+        HashMap result = new HashMap<String, Object>();
+        result.put("records", p.getRecords());
+        result.put("current", p.getCurrent());
+        result.put("size", p.getSize());
+        result.put("pages", p.getPages());
+        result.put("total", p.getTotal());
+
+        String message = "已查询到" + p.getTotal() +"条数据";
+
+        return map.outMap("200", result, message);
     }
 
     /**
@@ -89,15 +105,26 @@ public class UserService {
         int row = 0;
         String massage = "插入";
 
-        row = m.insert(user);
+        user.setPower(1);
 
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(user.getUId(), user.getUsername())) {
+            row = 0;
+            is = false;
+            massage = "用户名已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.insert(user);
+
+            info.insert(user.getUId());
+
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -114,15 +141,21 @@ public class UserService {
         int row = 0;
         String massage = "修改";
 
-        row = m.updateById(user);
-
-        if (row != 0) {
-            is = true;
-            massage += "成功";
+        if (checkName(user.getUId(), user.getUsername())) {
+            row = 0;
+            is = false;
+            massage = "用户名已存在";
         }
         else {
-            is = false;
-            massage += "失败";
+            row = m.updateById(user);
+            if (row != 0) {
+                is = true;
+                massage += "成功";
+            }
+            else {
+                is = false;
+                massage += "失败";
+            }
         }
         return map.outMap("200", is, row, massage);
     }
@@ -150,6 +183,21 @@ public class UserService {
             massage += "删除";
         }
         return map.outMap("200", is, row, massage);
+    }
+
+    /**
+     * 检查命名是否已存在
+     *
+     * @param id {Integer} id
+     * @param name {String} name
+     * @return checkName {Boolean} 检查结果
+     */
+    private Boolean checkName(Integer id, String name) {
+        QueryWrapper wrapper = new QueryWrapper<User>()
+                .select("*")
+                .ne("uId", id)
+                .eq("username", name);
+        return m.selectMaps(wrapper).size() != 0;
     }
 }
 

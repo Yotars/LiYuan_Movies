@@ -52,8 +52,8 @@ public class OderController {
      * }
      */
     @PostMapping
-    public Map insert(Oder oder, String token) {
-        return s.insert(oder, token);
+    public Map insert(Oder oder) {
+        return s.insert(oder);
     }
 
     /**
@@ -72,8 +72,8 @@ public class OderController {
      * }
      */
     @PostMapping("/cancel")
-    public Map cancel(Oder oder, String token) {
-        return s.cancel(oder, token);
+    public Map cancel(Oder oder) {
+        return s.cancel(oder);
     }
 
     /**

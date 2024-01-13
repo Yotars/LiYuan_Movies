@@ -13,4 +13,5 @@ import lombok.Data;
 public class RoomFind {
     private Integer index;
     private Integer size;
+    private String mName;
 }
