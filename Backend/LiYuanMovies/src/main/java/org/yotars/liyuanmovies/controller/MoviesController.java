@@ -1,8 +1,8 @@
-package com.liyuan.controller;
+package org.yotars.liyuanmovies.controller;
 
-import com.liyuan.db.entity.Movies;
-import com.liyuan.db.find.MoviesFind;
-import com.liyuan.db.service.MoviesService;
+import org.yotars.liyuanmovies.db.entity.Movies;
+import org.yotars.liyuanmovies.db.find.MoviesFind;
+import org.yotars.liyuanmovies.db.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

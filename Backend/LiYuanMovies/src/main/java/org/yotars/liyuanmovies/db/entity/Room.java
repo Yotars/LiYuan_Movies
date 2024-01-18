@@ -1,4 +1,4 @@
-package com.liyuan.db.entity;
+package org.yotars.liyuanmovies.db.entity;
 
 import lombok.Data;
 

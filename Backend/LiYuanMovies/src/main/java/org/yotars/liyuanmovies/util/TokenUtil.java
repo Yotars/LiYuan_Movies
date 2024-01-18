@@ -1,10 +1,10 @@
-package com.liyuan.util;
+package org.yotars.liyuanmovies.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.liyuan.db.entity.User;
+import org.yotars.liyuanmovies.db.entity.User;
 import org.springframework.stereotype.Component;
 
 /**

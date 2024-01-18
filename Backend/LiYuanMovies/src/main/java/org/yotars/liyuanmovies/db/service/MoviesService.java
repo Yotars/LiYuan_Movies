@@ -1,15 +1,15 @@
-package com.liyuan.db.service;
+package org.yotars.liyuanmovies.db.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
-import com.liyuan.db.entity.Movies;
-import com.liyuan.db.entity.Type;
-import com.liyuan.db.find.MoviesFind;
-import com.liyuan.db.mapper.MoviesMapper;
-import com.liyuan.db.mapper.TypeMapper;
-import com.liyuan.util.MapUtil;
+import org.yotars.liyuanmovies.db.entity.Movies;
+import org.yotars.liyuanmovies.db.entity.Type;
+import org.yotars.liyuanmovies.db.find.MoviesFind;
+import org.yotars.liyuanmovies.db.mapper.MoviesMapper;
+import org.yotars.liyuanmovies.db.mapper.TypeMapper;
+import org.yotars.liyuanmovies.util.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.liyuan;
+package org.yotars.liyuanmovies;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

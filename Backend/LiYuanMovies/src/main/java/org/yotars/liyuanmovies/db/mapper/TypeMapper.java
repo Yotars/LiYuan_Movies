@@ -1,7 +1,7 @@
-package com.liyuan.db.mapper;
+package org.yotars.liyuanmovies.db.mapper;
 
 import com.github.yulichang.base.MPJBaseMapper;
-import com.liyuan.db.entity.Type;
+import org.yotars.liyuanmovies.db.entity.Type;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

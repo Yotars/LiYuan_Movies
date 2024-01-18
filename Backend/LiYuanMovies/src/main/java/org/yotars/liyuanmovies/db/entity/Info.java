@@ -1,7 +1,5 @@
-package com.liyuan.db.entity;
+package org.yotars.liyuanmovies.db.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Date;

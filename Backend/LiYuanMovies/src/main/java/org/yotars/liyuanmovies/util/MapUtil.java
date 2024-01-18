@@ -1,4 +1,4 @@
-package com.liyuan.util;
+package org.yotars.liyuanmovies.util;
 
 import org.springframework.stereotype.Component;
 

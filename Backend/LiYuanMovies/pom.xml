@@ -8,8 +8,8 @@
         <version>3.1.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.liyuan</groupId>
-    <artifactId>LiYuanMovies</artifactId>
+    <groupId>org.yotars</groupId>
+    <artifactId>liyuanmovies</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>LiYuanMovies</name>
     <description>Demo project for Spring Boot</description>
@@ -64,6 +64,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}-backend-0.0.1</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

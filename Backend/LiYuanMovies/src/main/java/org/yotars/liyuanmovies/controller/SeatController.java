@@ -1,8 +1,8 @@
-package com.liyuan.controller;
+package org.yotars.liyuanmovies.controller;
 
-import com.liyuan.db.entity.Seat;
-import com.liyuan.db.find.SeatFind;
-import com.liyuan.db.service.SeatService;
+import org.yotars.liyuanmovies.db.entity.Seat;
+import org.yotars.liyuanmovies.db.find.SeatFind;
+import org.yotars.liyuanmovies.db.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

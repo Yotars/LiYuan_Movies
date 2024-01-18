@@ -1,4 +1,4 @@
-package com.liyuan.db.find;
+package org.yotars.liyuanmovies.db.find;
 
 import lombok.Data;
 

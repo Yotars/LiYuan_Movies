@@ -1,8 +1,8 @@
-package com.liyuan.controller;
+package org.yotars.liyuanmovies.controller;
 
-import com.liyuan.db.entity.Room;
-import com.liyuan.db.find.RoomFind;
-import com.liyuan.db.service.RoomService;
+import org.yotars.liyuanmovies.db.entity.Room;
+import org.yotars.liyuanmovies.db.find.RoomFind;
+import org.yotars.liyuanmovies.db.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
