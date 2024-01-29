@@ -74,7 +74,7 @@ public class InfoController {
      */
     @DeleteMapping
     public Map delete(Info info) {
-        return s.delete(info);
+        return s.delete(info.getUId());
     }
 }
 

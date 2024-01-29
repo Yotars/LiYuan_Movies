@@ -171,8 +171,8 @@ public class UserService {
         int row = 0;
         String massage = "删除";
 
-        row = m.deleteById(user);
-
+        row = m.deleteById(user.getUId());
+        info.delete(user.getUId());
         if (row != 0) {
             is = true;
             massage += "成功";

@@ -111,16 +111,16 @@ public class InfoService {
     /**
      * 删除 Info 表数据
      *
-     * @param info {Info} 传入的数据
+     * @param id {Intger} 传入的数据
      * @return  map {Map} 返回的结果
      */
-    public Map delete(Info info) {
+    public Map delete(Integer id) {
 
         boolean is = false;
         int row = 0;
         String massage = "删除";
 
-        row = m.deleteById(info);
+        row = m.deleteById(id);
 
         if (row != 0) {
             is = true;
