@@ -38,7 +38,7 @@ const viewsArr = Object.keys(view).map((key) => {
    */
   if (typeof view[key] !== "function") {
     name = view[key].name;
-    path = view[key].path;
+    path = view[key].path || '/' + view[key].name;
   } else {
     name = key
       .split("/")[key.split("/").length - 1]
