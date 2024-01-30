@@ -1,6 +1,6 @@
 interface path {
   [key: string]: {
-    name: string;
+    name?: string;
     path?: string;
   };
 }
@@ -12,9 +12,10 @@ interface path {
  * }
  * 支持添加自定义组件，但路径一定要写对
  */
-export default <path>{
+export const path: path = {
   "../views/console/ConsoleView.vue": {
     name: "console",
+    path: "/",
   },
   "../views/client/HomeView.vue": {
     name: "home",
