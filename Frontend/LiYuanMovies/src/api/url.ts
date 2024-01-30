@@ -1,7 +1,7 @@
 /**
  * 定义url对象中的参数
  */
-interface urls {
+interface url {
   [key: string]:
     | {
         api?: string[];
@@ -15,17 +15,17 @@ interface urls {
  * api 根据 url 生成对应的 接口 如：GET、POST、PUT、DELETE请求等等。
  *
  * 输入格式：
- * 
+ *
  * '接口名': {
  *   api: ['自定义接口名'],   // 可选参数，作用：将一些自定义的接口生成到 api 中
  *   not: ['默认接口名']      // 可选参数，作用：过滤默认生成的请求，如：GET、POST、PUT、DELETE
  * },
- * 
+ *
  * 或者：
- * 
+ *
  * '接口名':'接口名'          // 默认生成 GET、POST、PUT、DELETE请求。
  */
-const url: urls = {
+export const url: url = {
   user: {
     api: ["login", "isAdmin"],
   },
@@ -39,5 +39,3 @@ const url: urls = {
   room: "room",
   seat: "seat",
 };
-
-export default url;

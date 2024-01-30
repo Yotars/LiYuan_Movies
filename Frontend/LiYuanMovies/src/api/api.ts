@@ -1,5 +1,5 @@
 import axios from "axios";
-import url from "../api/url";
+import { url } from "./url";
 
 const baseURL: string = "/api";
 
@@ -93,9 +93,4 @@ const requeset = (key: string) => {
   return apis;
 };
 
-const apis: apis = {};
-for (const key in urls) {
-  apis[key] = requeset(key);
-}
-
-export default apis;
+export const api: apis[] = Object.keys(urls).map((key: string) => requeset(key));
