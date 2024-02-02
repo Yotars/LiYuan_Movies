@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import org.yotars.liyuanmovies.db.entity.Movies;
+import org.yotars.liyuanmovies.db.entity.Time;
 import org.yotars.liyuanmovies.db.entity.Type;
 import org.yotars.liyuanmovies.db.find.MoviesFind;
 import org.yotars.liyuanmovies.db.mapper.MoviesMapper;
+import org.yotars.liyuanmovies.db.mapper.TimeMapper;
 import org.yotars.liyuanmovies.db.mapper.TypeMapper;
 import org.yotars.liyuanmovies.util.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class MoviesService {
     @Autowired
     private TypeMapper type;
 
+    @Autowired
+    private TimeMapper time;
+
     private MapUtil map =  new MapUtil();
 
     /**
@@ -50,9 +55,9 @@ public class MoviesService {
                 .like("launchDate", find.getLaunchDate());
 
 //        将传过来的type进行拼接查询
-        String[]arr = find.getType().split(",");
-        for (int i = 0; i < arr.length; i++) {
-            wrapper.like("type", arr[i]);
+        String[]tArr = find.getType().split(",");
+        for (int i = 0; i < tArr.length; i++) {
+            wrapper.like("type", tArr[i]);
         }
 
         IPage p = m.selectJoinMapsPage(page,wrapper);
@@ -64,6 +69,7 @@ public class MoviesService {
         result.put("pages", p.getPages());
         result.put("total", p.getTotal());
         result.put("types", types());
+        result.put("times", times());
 
 //        查询信息
         String message = "已查询到" + p.getTotal() +"条数据";
@@ -184,6 +190,22 @@ public class MoviesService {
             types[i] = list.get(i).toString().split("=")[1].split("}")[0];
         }
         return Arrays.asList(types);
+    }
+
+    /**
+     * 查询所有的 time
+     *
+     * @return types {Arrays} 返回的数据
+     */
+    public List<String> times() {
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Time>()
+                .select("*");
+        List list = time.selectMaps(wrapper);
+        String[]times = new String[list.size()];
+        for (int i = 0; i < times.length; i++) {
+            times[i] = list.get(i).toString().split("=")[1].split("}")[0];
+        }
+        return Arrays.asList(times);
     }
 
     /**
