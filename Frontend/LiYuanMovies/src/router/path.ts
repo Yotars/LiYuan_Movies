@@ -17,6 +17,10 @@ export const path: path = {
     name: "console",
     path: "/",
   },
+  "../views/console/HomeView.vue": {
+    name: "consoleHome",
+    path: "/home",
+  },
   "../views/client/HomeView.vue": {
     name: "home",
     path: "/",
