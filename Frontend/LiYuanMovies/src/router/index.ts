@@ -64,6 +64,7 @@ const viewsArr = Object.keys(view).map((key: string) => {
 });
 
 const routes: Array<RouteRecordRaw> = viewsArr;
+routes[1]["redirect"] = '/console/home'
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
