@@ -3,9 +3,9 @@ package org.yotars.liyuanmovies.db.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
-import org.yotars.liyuanmovies.db.entity.Oder;
-import org.yotars.liyuanmovies.db.find.OderFind;
-import org.yotars.liyuanmovies.db.mapper.OderMapper;
+import org.yotars.liyuanmovies.db.entity.Order;
+import org.yotars.liyuanmovies.db.find.OrderFind;
+import org.yotars.liyuanmovies.db.mapper.OrderMapper;
 import org.yotars.liyuanmovies.util.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * (Oder)表服务层
+ * (Order)表服务层
  *
  * @author Yotars
  * @since 2024-01-11 15:45:06
  */
 @Service
-public class OderService {
+public class OrderService {
 
     @Autowired
-    private OderMapper m;
+    private OrderMapper m;
 
     @Autowired
     private SeatService seat;
@@ -33,16 +33,16 @@ public class OderService {
     private MapUtil map = new MapUtil();
 
     /**
-     * 查询 Oder 表
+     * 查询 Order 表
      *
-     * @param find {OderFind} 传入的数据
+     * @param find {OrderFind} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map list(OderFind find) {
+    public Map list(OrderFind find) {
 
         Page page = new Page<>(find.getIndex(), find.getSize());
         
-        MPJQueryWrapper wrapper = new MPJQueryWrapper<Oder>()
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Order>()
                 .select("*")
                 .like("oNumber", find.getONumber());
         if (find.getUId() != null) {
@@ -64,12 +64,12 @@ public class OderService {
     }
 
     /**
-     * 插入 Oder 表数据
+     * 插入 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map insert(Oder oder) {
+    public Map insert(Order order) {
 
         boolean is = false;
         int row = 0;
@@ -77,12 +77,12 @@ public class OderService {
 
         String[]number = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
 
-        oder.setOStatus(1);
-        oder.setONumber(rNumber());
-        oder.setUId(oder.getUId());
+        order.setOStatus(1);
+        order.setONumber(rNumber());
+        order.setUId(order.getUId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        oder.setODate(sdf.format(System.currentTimeMillis()));
-        String[] sIds = oder.getODetails().split(",");
+        order.setODate(sdf.format(System.currentTimeMillis()));
+        String[] sIds = order.getODetails().split(",");
         Map seats = null;
         String oMessage = "一共有"+ sIds.length +"张票, ";
         for (int i = 0; i < sIds.length; i++) {
@@ -91,9 +91,9 @@ public class OderService {
                     ": " + number[(int) seats.get("l")] +
                     "排" + number[(int) seats.get("r")] + "列, ";
         }
-        oder.setOMessage(oMessage);
+        order.setOMessage(oMessage);
 
-        row = m.insert(oder);
+        row = m.insert(order);
         if (row != 0) {
             is = true;
             massage += "成功";
@@ -108,23 +108,23 @@ public class OderService {
     /**
      * 取消订单
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map cancel(Oder oder) {
+    public Map cancel(Order order) {
 
         boolean is = false;
         int row = 0;
         String massage = "修改";
 
-        oder.setOStatus(0);
+        order.setOStatus(0);
 
-        String[] sIds = oder.getODetails().split(",");
+        String[] sIds = order.getODetails().split(",");
         for (int i = 0; i < sIds.length; i++) {
             seat.status(Integer.valueOf(sIds[i]), 0);
         }
 
-        row = m.updateById(oder);
+        row = m.updateById(order);
         if (row != 0) {
             is = true;
             massage += "成功";
@@ -139,18 +139,18 @@ public class OderService {
     /**
      * 完成订单
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map done(Oder oder) {
+    public Map done(Order order) {
 
         boolean is = false;
         int row = 0;
         String massage = "修改";
 
-        oder.setOStatus(3);
+        order.setOStatus(3);
 
-        row = m.updateById(oder);
+        row = m.updateById(order);
         if (row != 0) {
             is = true;
             massage += "成功";
@@ -163,18 +163,18 @@ public class OderService {
     }
 
     /**
-     * 修改 Oder 表数据
+     * 修改 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return  map {Map} 返回的结果
      */
-    public Map update(Oder oder) {
+    public Map update(Order order) {
 
         boolean is = false;
         int row = 0;
         String massage = "修改";
 
-        row = m.updateById(oder);
+        row = m.updateById(order);
 
         if (row != 0) {
             is = true;
@@ -188,21 +188,21 @@ public class OderService {
     }
 
     /**
-     * 删除 Oder 表数据
+     * 删除 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      */
-    public Map delete(Oder oder) {
+    public Map delete(Order order) {
 
         boolean is = false;
         int row = 0;
         String massage = "删除";
 
-        row = m.deleteById(oder);
+        row = m.deleteById(order);
 
         if (row != 0) {
-            String[] sIds = oder.getODetails().split(",");
+            String[] sIds = order.getODetails().split(",");
             for (int i = 0; i < sIds.length; i++) {
                 seat.status(Integer.valueOf(sIds[i]), 0);
             }
@@ -224,7 +224,7 @@ public class OderService {
     private String rNumber() {
         Random random = new Random();
         String r = "LY" + (random.nextLong(10000000) + 10000000);
-        MPJQueryWrapper wrapper = new MPJQueryWrapper<Oder>()
+        MPJQueryWrapper wrapper = new MPJQueryWrapper<Order>()
                 .select("*")
                 .eq("oNumber", r);
 

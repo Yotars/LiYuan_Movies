@@ -3,13 +3,13 @@ package org.yotars.liyuanmovies.db.entity;
 import lombok.Data;
 
 /**
- * (Oder)实体类
+ * (Order)实体类
  *
  * @author Yotars
  * @since 2024-01-12 23:56:30
  */
 @Data
-public class Oder {
+public class Order {
     /**
      * 订单ID
      */

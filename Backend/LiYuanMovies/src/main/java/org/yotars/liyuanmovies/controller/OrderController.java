@@ -1,30 +1,30 @@
 package org.yotars.liyuanmovies.controller;
 
-import org.yotars.liyuanmovies.db.entity.Oder;
-import org.yotars.liyuanmovies.db.find.OderFind;
-import org.yotars.liyuanmovies.db.service.OderService;
+import org.yotars.liyuanmovies.db.entity.Order;
+import org.yotars.liyuanmovies.db.find.OrderFind;
+import org.yotars.liyuanmovies.db.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 /**
- * (Oder)表控制层
+ * (Order)表控制层
  *
  * @author Yotars
  * @since 2024-01-11 15:45:07
  */
 @RestController
 @RequestMapping("/oder")
-public class OderController {
+public class OrderController {
 
     @Autowired
-    private OderService s;
+    private OrderService s;
 
     /**
-     * 查询 Oder 表
+     * 查询 Order 表
      *
-     * @param find {OderFind} 传入的数据
+     * @param find {OrderFind} 传入的数据
      * @return map {Map} 返回的结果
      * {
      *   "status":"200",
@@ -32,14 +32,14 @@ public class OderController {
      * }
      */
     @GetMapping
-    public Map list(OderFind find) {
+    public Map list(OrderFind find) {
         return s.list(find);
     }
 
     /**
-     * 插入 Oder 表数据
+     * 插入 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      * {
      *   "status":"200",
@@ -52,14 +52,14 @@ public class OderController {
      * }
      */
     @PostMapping
-    public Map insert(Oder oder) {
-        return s.insert(oder);
+    public Map insert(Order order) {
+        return s.insert(order);
     }
 
     /**
      * 取消订单
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      * {
      *   "status":"200",
@@ -72,14 +72,14 @@ public class OderController {
      * }
      */
     @PostMapping("/cancel")
-    public Map cancel(Oder oder) {
-        return s.cancel(oder);
+    public Map cancel(Order order) {
+        return s.cancel(order);
     }
 
     /**
      * 完成订单
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return map {Map} 返回的结果
      * {
      *   "status":"200",
@@ -92,14 +92,14 @@ public class OderController {
      * }
      */
     @PostMapping("/done")
-    public Map done(Oder oder) {
-        return s.done(oder);
+    public Map done(Order order) {
+        return s.done(order);
     }
 
     /**
-     * 修改 Oder 表数据
+     * 修改 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return  map {Map} 返回的结果
      *   {
      *     "status":"200",
@@ -112,14 +112,14 @@ public class OderController {
      *   }
      */
     @PutMapping
-    public Map update(Oder oder) {
-        return s.update(oder);
+    public Map update(Order order) {
+        return s.update(order);
     }
 
     /**
-     * 删除 Oder 表数据
+     * 删除 Order 表数据
      *
-     * @param oder {Oder} 传入的数据
+     * @param order {Order} 传入的数据
      * @return  map {Map} 返回的结果
      * {
      *   "status":"200",
@@ -132,8 +132,8 @@ public class OderController {
      * }
      */
     @DeleteMapping
-    public Map delete(Oder oder) {
-        return s.delete(oder);
+    public Map delete(Order order) {
+        return s.delete(order);
     }
 }
 
