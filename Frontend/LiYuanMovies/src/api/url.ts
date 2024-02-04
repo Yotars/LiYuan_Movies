@@ -25,7 +25,7 @@ interface url {
  *
  * '接口名':'接口名'          // 默认生成 GET、POST、PUT、DELETE请求。
  */
-export const url: url = {
+export const urls: url = {
   user: {
     api: ["login", "isAdmin"],
   },

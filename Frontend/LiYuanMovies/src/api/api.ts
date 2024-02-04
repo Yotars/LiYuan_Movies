@@ -1,23 +1,13 @@
 import axios from "axios";
-import { url } from "./url";
+import { urls } from "./url";
 
 const baseURL: string = "/api";
 
-interface urls {
-  [key: string]:
-    | {
-        api?: string[];
-        not?: string[];
-      }
-    | string;
-}
 interface apis {
   [key: string]: {
     [key: string]: any;
   };
 }
-
-const urls: urls = url;
 
 /**
  * 根据读取到的配置生成请求函数
@@ -93,4 +83,11 @@ const requeset = (key: string) => {
   return apis;
 };
 
-export const api: apis[] = Object.keys(urls).map((key: string) => requeset(key));
+/**
+ * 根据配置文件 urls 生成请求接口
+ */
+const apis: apis = {};
+for (const key in urls) {
+  apis[key] = requeset(key);
+}
+export const api = apis;
