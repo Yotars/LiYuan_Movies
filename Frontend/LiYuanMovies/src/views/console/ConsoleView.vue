@@ -33,9 +33,12 @@
 import { ref } from "vue";
 
 const text = ref("欢迎使用，梨园影城有后台管理系统");
+
 const rag = /(\S*)5173/;
 const href = window.location.href;
-const _active = href.replace(rag, "");
+const _href = href.replace(rag, "");
+const _active = !_href.indexOf("home") ? _href : "/console/home";
+
 const menu = [
   { name: "首页", path: "/console/home" },
   { name: "用户管理", path: "/console/user" },
