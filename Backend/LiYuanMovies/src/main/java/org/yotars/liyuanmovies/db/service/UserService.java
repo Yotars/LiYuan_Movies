@@ -76,7 +76,8 @@ public class UserService {
         Page page = new Page<>(find.getCurrent(), find.getSize());
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<User>()
-                .select("*");
+                .select("*")
+                .like("username", find.getUsername());
 
         IPage p = m.selectJoinMapsPage(page,wrapper);
 

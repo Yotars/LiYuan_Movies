@@ -13,4 +13,5 @@ import lombok.Data;
 public class UserFind {
     private Integer current;
     private Integer size;
+    private String username;
 }
