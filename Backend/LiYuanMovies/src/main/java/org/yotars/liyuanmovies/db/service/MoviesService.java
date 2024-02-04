@@ -46,7 +46,7 @@ public class MoviesService {
     public Map list(MoviesFind find) {
 
 //        创建一个分页对象
-        Page page = new Page<>(find.getIndex(), find.getSize());
+        Page page = new Page<>(find.getCurrent(), find.getSize());
 
 //        数据查询语句
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Movies>()
@@ -62,14 +62,15 @@ public class MoviesService {
 
         IPage p = m.selectJoinMapsPage(page,wrapper);
 
+        HashMap pages = new HashMap<String, Object>();
+        pages.put("current", p.getCurrent());
+        pages.put("size", p.getSize());
+        pages.put("pages", p.getPages());
+        pages.put("total", p.getTotal());
+
         HashMap result = new HashMap<String, Object>();
         result.put("records", p.getRecords());
-        result.put("current", p.getCurrent());
-        result.put("size", p.getSize());
-        result.put("pages", p.getPages());
-        result.put("total", p.getTotal());
-        result.put("types", types());
-        result.put("times", times());
+        result.put("pagination", pages);
 
 //        查询信息
         String message = "已查询到" + p.getTotal() +"条数据";

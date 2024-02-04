@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 public class OrderFind {
-    private Integer index;
+    private Integer current;
     private Integer size;
     private Integer uId;
     private String oNumber;

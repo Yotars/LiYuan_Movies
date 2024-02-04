@@ -11,7 +11,7 @@ import lombok.Data;
  */
 @Data
 public class MoviesFind {
-    private Integer index;
+    private Integer current;
     private Integer size;
     private String mName;
     private String type;
