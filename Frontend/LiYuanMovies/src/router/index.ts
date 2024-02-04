@@ -6,11 +6,6 @@ import {
 import { path } from "./path";
 
 /**
- * 读取 views 中的 config 路径配置文件
- */
-const paths = path;
-
-/**
  * 读取 views 中的所有 vue组件
  */
 const views = import.meta.glob("../views/**/**.vue");
@@ -20,21 +15,21 @@ const views = import.meta.glob("../views/**/**.vue");
  *
  * 以 paths 中的配置为主，如匹配到同路径优先选择 paths 中的配置
  */
-const view = Object.assign({}, views, paths);
+const view = Object.assign({}, views, path);
 
 /**
  * 生成路由配置
  */
-const viewsArr = Object.keys(view).map((key: string) => {
+const routes: Array<RouteRecordRaw> = Object.keys(view).map((key: string) => {
   let name = "";
   let path = "";
   const component = key;
 
   const keyArr = key.split("/");
   const pathName = keyArr[keyArr.length - 1]
-    .split(".")[0]
     .toLowerCase()
-    .replace("view", "");
+    .replace("view.vue", "")
+    .replace("console.vue", "");
 
   /**
    * 判断路径指向是否为组件
@@ -56,17 +51,24 @@ const viewsArr = Object.keys(view).map((key: string) => {
     path = "/console" + path;
   }
 
-  return {
+  const router: {
+    name: string;
+    path: string;
+    component: object;
+    redirect?: string;
+  } = {
     name: name,
     path: path,
     component: import(component),
   };
-});
 
-const routes: Array<RouteRecordRaw> = viewsArr;
-routes[1]["redirect"] = '/console/home'
+  if (view[key].redirect) {
+    router.redirect = view[key].redirect;
+  }
+  return router;
+});
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
-})
+});

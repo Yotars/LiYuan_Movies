@@ -22,14 +22,6 @@ export const path: path = {
   "../views/console/ConsoleView.vue": {
     name: "console",
     path: "/",
-    redirect: "/home",
-  },
-  "../views/console/HomeConsole.vue": {
-    name: "consoleHome",
-    path: "/home",
-  },
-  "../views/console/MovieConsole.vue": {
-    name: "consoleMovie",
-    path: "/movie",
+    redirect: "/console/home",
   },
 };
