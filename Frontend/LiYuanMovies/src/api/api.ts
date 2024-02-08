@@ -46,7 +46,7 @@ const requeset = (key: string) => {
    * 默认的 apis
    */
   const method = ["GET", "POST", "PUT", "DELETE"];
-  const api = ["list", "insert", "change", "delete"];
+  const api = ["list", "insert", "update", "delete"];
 
   /**
    * 如果配置中有 not 则删除 apis 中对应的 api
@@ -74,10 +74,15 @@ const requeset = (key: string) => {
     if (method[i] === undefined) {
       url = url + "/" + api[i];
     }
-    apis[api[i]] = async (item: { [key: string]: string }) => {
-      const res = await axios.request(config(url, item, method[i]));
-      if (res.status === 200) return res.data;
-      else "error";
+    apis[api[i]] = (item: { [key: string]: string }) => {
+      return new Promise((resolve) => {
+        const res = axios
+          .request(config(url, item, method[i]))
+          .then((res: { data: object }) => {
+            return res.data;
+          });
+        return resolve(res);
+      });
     };
   }
   return apis;
@@ -90,4 +95,4 @@ const apis: apis = {};
 for (const key in urls) {
   apis[key] = requeset(key);
 }
-export const api = apis;
+export default apis;
