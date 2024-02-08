@@ -32,7 +32,7 @@ export const urls: url = {
   info: {
     not: ["insert"],
   },
-  oder: {
+  order: {
     api: ["cancel", "done"],
   },
   movies: "movies",
