@@ -43,5 +43,5 @@ public class Info {
     /**
      * 用户邮箱
      */
-    private String mail;
+    private String email;
 }
