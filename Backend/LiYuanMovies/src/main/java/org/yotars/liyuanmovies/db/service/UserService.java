@@ -12,6 +12,7 @@ import org.yotars.liyuanmovies.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,8 +62,23 @@ public class UserService {
      * @param token {String} 传入token
      * @return isAdmin {Boolean} 验证结果
      */
-    public Boolean isAdmin(String token) {
-        return tokenUtil.isAdmin(token);
+    public Map isAdmin(String token) {
+
+        Boolean is = tokenUtil.isAdmin(token);
+        String message = "";
+
+        if (is) {
+            message = "用户为管理员";
+        }
+        else {
+            message = "用户不为管理员";
+        }
+
+        HashMap result = new HashMap<String, Object>();
+        result.put("is", is);
+        result.put("user", tokenUtil.parseToken(token));
+
+        return map.outMap("200", result, message);
     }
 
     /**
@@ -106,7 +122,7 @@ public class UserService {
 
         boolean is = false;
         int row = 0;
-        String massage = "插入";
+        String massage = "数据添加";
 
         user.setPower(1);
 
@@ -142,7 +158,7 @@ public class UserService {
 
         boolean is = false;
         int row = 0;
-        String massage = "修改";
+        String massage = "数据更新";
 
         if (checkName(user.getUId(), user.getUsername())) {
             row = 0;
@@ -173,10 +189,11 @@ public class UserService {
 
         boolean is = false;
         int row = 0;
-        String massage = "删除";
+        String massage = "数据删除";
 
         row = m.deleteById(user.getUId());
-        info.delete(user.getUId());
+        System.out.println(user.getUId());
+//        info.delete(user.getUId());
         if (row != 0) {
             is = true;
             massage += "成功";

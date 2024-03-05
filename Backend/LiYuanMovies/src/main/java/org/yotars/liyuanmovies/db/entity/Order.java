@@ -1,5 +1,8 @@
 package org.yotars.liyuanmovies.db.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,10 +12,12 @@ import lombok.Data;
  * @since 2024-01-12 23:56:30
  */
 @Data
+@TableName("`order`")
 public class Order {
     /**
      * 订单ID
      */
+    @TableId(value = "oId", type = IdType.AUTO)
     private Integer oId;
     /**
      * 用户ID

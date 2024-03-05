@@ -1,0 +1,25 @@
+.seatBox {
+  height: 500px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  .seat {
+    width: 58px;
+    height: 50px;
+    outline: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    line-height: 50px;
+    text-align: center;
+  }
+  .status-0 {
+    background-color: #909399;
+  }
+  .status-1 {
+    background-color: #409eff;
+  }
+}

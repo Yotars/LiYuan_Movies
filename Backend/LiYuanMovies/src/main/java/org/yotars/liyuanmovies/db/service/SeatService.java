@@ -45,7 +45,7 @@ public class SeatService {
         if (find.getRId() != null) {
             wrapper.eq("rId", find.getRId());
         }
-                
+
         List p = m.selectJoinMaps(wrapper);
 
         HashMap result = new HashMap<String, Object>();

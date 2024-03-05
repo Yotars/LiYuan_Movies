@@ -18,13 +18,17 @@ const views = import.meta.glob("../views/**/**.vue");
 const view = Object.assign({}, views, path);
 
 /**
+ * 获取所有的 import 模块
+ */
+const modules = import.meta.glob("../**/**/**.vue");
+
+/**
  * 生成路由配置
  */
 const routes: Array<RouteRecordRaw> = Object.keys(view).map((key: string) => {
   let name = "";
   let path = "";
   const component = key;
-
   const keyArr = key.split("/");
   const pathName = keyArr[keyArr.length - 1]
     .toLowerCase()
@@ -49,17 +53,20 @@ const routes: Array<RouteRecordRaw> = Object.keys(view).map((key: string) => {
    */
   if (keyArr.indexOf("console") !== -1) {
     path = "/console" + path;
+    name = name + "Console";
   }
 
-  const router: {
-    name: string;
-    path: string;
-    component: object;
-    redirect?: string;
-  } = {
+  const router:
+    | {
+        name: string;
+        path: string;
+        component: any;
+        redirect?: string;
+      }
+    | any = {
     name: name,
     path: path,
-    component: import(component),
+    component: modules[component],
   };
 
   if (view[key].redirect) {
@@ -68,7 +75,7 @@ const routes: Array<RouteRecordRaw> = Object.keys(view).map((key: string) => {
   return router;
 });
 
-export const router = createRouter({
+export default createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
 });

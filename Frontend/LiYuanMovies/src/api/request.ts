@@ -1,17 +1,20 @@
 import api from "./api";
 
 /**
+ * 生成的二次封装的接口可以直接调用
+ * 比如：
+ * user.login(传入对象)
+ */
+
+/**
  * 封装返回结果
  *
  * @param res 请求结果
  * @returns 返回封装结果
  */
 const process = (res: any) => {
-  return new Promise((resolve) => {
-    const data: {
-      [key: string]: string;
-    } = res.then((res: { message: any; result: any }) => {
-      console.log(res.message);
+  return new Promise(resolve => {
+    const data = res.then((res: any) => {
       return res;
     });
     return resolve(data);
@@ -57,6 +60,9 @@ export const info = {
   },
 };
 
+/**
+ * order请求函数
+ */
 export const order = {
   list: (item: {}) => {
     return process(api.order.list(item));
@@ -78,6 +84,9 @@ export const order = {
   },
 };
 
+/**
+ * movies请求函数
+ */
 export const movies = {
   list: (item: {}) => {
     return process(api.movies.list(item));
@@ -93,6 +102,9 @@ export const movies = {
   },
 };
 
+/**
+ * room请求函数
+ */
 export const room = {
   list: (item: {}) => {
     return process(api.room.list(item));
@@ -108,6 +120,9 @@ export const room = {
   },
 };
 
+/**
+ * seat请求函数
+ */
 export const seat = {
   list: (item: {}) => {
     return process(api.seat.list(item));

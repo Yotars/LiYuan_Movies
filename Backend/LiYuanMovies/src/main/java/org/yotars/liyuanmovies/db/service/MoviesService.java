@@ -44,37 +44,34 @@ public class MoviesService {
      * @return map {Map} 返回的结果
      */
     public Map list(MoviesFind find) {
-
 //        创建一个分页对象
         Page page = new Page<>(find.getCurrent(), find.getSize());
-
 //        数据查询语句
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Movies>()
                 .select("*")
                 .like("mName", find.getMName())
                 .like("launchDate", find.getLaunchDate());
-
+        if (find.getMId() != "" && find.getMId() != null) {
+            wrapper.eq("mId", find.getMId());
+        }
 //        将传过来的type进行拼接查询
         String[]tArr = find.getType().split(",");
         for (int i = 0; i < tArr.length; i++) {
             wrapper.like("type", tArr[i]);
         }
-
         IPage p = m.selectJoinMapsPage(page,wrapper);
-
         HashMap pages = new HashMap<String, Object>();
         pages.put("current", p.getCurrent());
         pages.put("size", p.getSize());
         pages.put("pages", p.getPages());
         pages.put("total", p.getTotal());
-
         HashMap result = new HashMap<String, Object>();
         result.put("records", p.getRecords());
         result.put("pagination", pages);
-
+        result.put("types", types());
+        result.put("times", times());
 //        查询信息
         String message = "已查询到" + p.getTotal() +"条数据";
-
         return map.outMap("200", result, message);
     }
 

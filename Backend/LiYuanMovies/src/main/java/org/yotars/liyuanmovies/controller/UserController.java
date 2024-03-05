@@ -46,7 +46,7 @@ public class UserController {
      * @return isAdmin {Boolean} 验证结果
      */
     @PostMapping("/isAdmin")
-    public Boolean isAdmin(String token) {
+    public Map isAdmin(String token) {
         return s.isAdmin(token);
     }
 
@@ -57,7 +57,8 @@ public class UserController {
      * @return map {Map} 返回的结果
      * {
      *   "status":"200",
-     *   "result": "查询结果"
+     *   "result": "查询结果",
+     *   "message": "信息"
      * }
      */
     @GetMapping

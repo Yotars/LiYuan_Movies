@@ -40,10 +40,14 @@ public class RoomService {
         Page page = new Page<>(find.getCurrent(), find.getSize());
         
         MPJQueryWrapper wrapper = new MPJQueryWrapper<Room>()
-                .select("t.*, m.mName")
+                .select("t.*, m.mName, m.Intro, m.mImage")
                 .leftJoin("movies m ON t.mId = m.mId")
                 .like("m.mName", find.getMName());
-                
+
+        if (find.getMId() != "" && find.getMId() != null) {
+            wrapper.eq("t.mId", find.getMId());
+        }
+
         IPage p = m.selectJoinMapsPage(page,wrapper);
 
         HashMap pages = new HashMap<String, Object>();

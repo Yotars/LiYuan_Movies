@@ -48,7 +48,7 @@ public class OrderService {
         if (find.getUId() != null) {
             wrapper.eq("uId", find.getUId());
         }
-                
+
         IPage p = m.selectJoinMapsPage(page,wrapper);
 
         HashMap pages = new HashMap<String, Object>();
@@ -87,12 +87,12 @@ public class OrderService {
         order.setODate(sdf.format(System.currentTimeMillis()));
         String[] sIds = order.getODetails().split(",");
         Map seats = null;
-        String oMessage = "一共有"+ sIds.length +"张票, ";
+        String oMessage = "一共有"+ sIds.length +"张票:\n";
         for (int i = 0; i < sIds.length; i++) {
             seats = seat.status(Integer.valueOf(sIds[i]), 1);
             oMessage += seats.get("rName")+
                     ": " + number[(int) seats.get("l")] +
-                    "排" + number[(int) seats.get("r")] + "列, ";
+                    "排" + number[(int) seats.get("r")] + "列,\n";
         }
         order.setOMessage(oMessage);
 
@@ -105,7 +105,13 @@ public class OrderService {
             is = false;
             massage += "失败";
         }
-        return map.outMap("200", is, row, massage);
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("order", order);
+        result.put("is", is);
+        result.put("row", row);
+
+        return map.outMap("200", result, massage);
     }
 
     /**
@@ -151,7 +157,7 @@ public class OrderService {
         int row = 0;
         String massage = "修改";
 
-        order.setOStatus(3);
+        order.setOStatus(2);
 
         row = m.updateById(order);
         if (row != 0) {
@@ -176,7 +182,7 @@ public class OrderService {
         boolean is = false;
         int row = 0;
         String massage = "修改";
-
+        System.out.println(order);
         row = m.updateById(order);
 
         if (row != 0) {

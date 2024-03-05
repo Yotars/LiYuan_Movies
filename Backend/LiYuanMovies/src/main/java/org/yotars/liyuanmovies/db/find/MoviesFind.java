@@ -17,4 +17,5 @@ public class MoviesFind {
     private String type;
     private String area;
     private String launchDate;
+    private String mId;
 }

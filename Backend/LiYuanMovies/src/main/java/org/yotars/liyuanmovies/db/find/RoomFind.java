@@ -14,4 +14,5 @@ public class RoomFind {
     private Integer current;
     private Integer size;
     private String mName;
+    private String mId;
 }

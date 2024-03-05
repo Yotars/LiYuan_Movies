@@ -1,5 +1,7 @@
 package org.yotars.liyuanmovies.db.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.sql.Date;
@@ -15,6 +17,7 @@ public class Info {
     /**
      * 用户id
      */
+    @TableId(value = "uId")
     private Integer uId;
     /**
      * 用户昵称

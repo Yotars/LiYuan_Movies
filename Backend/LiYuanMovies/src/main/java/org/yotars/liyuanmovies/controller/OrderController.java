@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2024-01-11 15:45:07
  */
 @RestController
-@RequestMapping("/oder")
+@RequestMapping("/order")
 public class OrderController {
 
     @Autowired

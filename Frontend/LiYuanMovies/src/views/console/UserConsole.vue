@@ -223,9 +223,25 @@ const query = ref({
   username: "",
 });
 
+interface User {
+  uId: string;
+  username: string;
+  password: string;
+  power: number;
+}
+
+let modelNull = {
+  uId: "",
+  username: "",
+  password: "",
+  power: 1,
+};
+
+let modelData: User = modelNull;
+
 const getList = async () => {
   const { result, message }: any = await user.list(query.value);
-  list.splice(0, list.length);
+  list.splice(0);
   list.push(...result.records);
   query.value = Object.assign({}, query.value, result.pagination);
   ElMessage({
@@ -294,25 +310,8 @@ const model = ref(false);
 const modelTitle = ref("模态框");
 const method = ref("");
 const isInfo = ref(false);
-let modelData:
-  | {
-      [key: string]: string;
-    }
-  | {
-      uId: string;
-      username: string;
-      password: string;
-      power: number;
-    };
 
-let modelNull = {
-  uId: "",
-  username: "",
-  password: "",
-  power: 1,
-};
-
-const button = (operation: string, row: object = {}) => {
+const button = (operation: string, row: User = modelNull) => {
   const operations: { [key: string]: Function } = {
     insert: () => {
       modelData = reactive({ ...modelNull });

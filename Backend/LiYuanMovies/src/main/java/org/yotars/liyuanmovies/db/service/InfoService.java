@@ -2,12 +2,12 @@ package org.yotars.liyuanmovies.db.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.yulichang.query.MPJQueryWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.yotars.liyuanmovies.db.entity.Info;
 import org.yotars.liyuanmovies.db.find.InfoFind;
 import org.yotars.liyuanmovies.db.mapper.InfoMapper;
 import org.yotars.liyuanmovies.util.MapUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -111,17 +111,17 @@ public class InfoService {
     /**
      * 删除 Info 表数据
      *
-     * @param id {Intger} 传入的数据
+     * @param info {Info} 传入的数据
      * @return  map {Map} 返回的结果
      */
-    public Map delete(Integer id) {
+    public Map delete(Info info) {
 
         boolean is = false;
         int row = 0;
         String massage = "删除";
 
-        row = m.deleteById(id);
-
+        System.out.println(info.getUId());
+        row = m.deleteById(info);
         if (row != 0) {
             is = true;
             massage += "成功";

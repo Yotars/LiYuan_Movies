@@ -15,13 +15,18 @@ interface path {
  * 支持添加自定义组件，但路径一定要写对
  */
 export const path: path = {
-  "../views/client/HomeView.vue": {
-    name: "home",
+  "../views/client/IndexView.vue": {
+    name: "index",
     path: "/",
+    redirect: "/home",
   },
   "../views/console/ConsoleView.vue": {
     name: "console",
     path: "/",
     redirect: "/console/home",
+  },
+  "../views/client/UesrView.vue": {
+    name: "user",
+    path: "/user",
   },
 };

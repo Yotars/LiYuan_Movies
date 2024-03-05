@@ -1,5 +1,5 @@
 import axios from "axios";
-import { urls } from "./url";
+import { apiName, urls } from "./url";
 
 const baseURL: string = "/api";
 
@@ -46,20 +46,17 @@ const requeset = (key: string) => {
    * 默认的 apis
    */
   const method = ["GET", "POST", "PUT", "DELETE"];
-  const api = ["list", "insert", "update", "delete"];
+  const api = apiName;
 
   /**
    * 如果配置中有 not 则删除 apis 中对应的 api
    * 如果配置中有 api 则 apis 中添加对应的 api
    */
   if (typeof url === "object" && typeof url.not !== "undefined") {
-    const index = [];
     for (let i = 0; i < url.not.length; i++) {
-      index.push(api.indexOf(url.not[i]));
-    }
-    for (let i = 0; i < index.length; i++) {
-      api.splice(index[i], 1);
-      method.splice(index[i], 1);
+      const index = api.indexOf(url.not[i]);
+      api.splice(index, 1);
+      method.splice(index, 1);
     }
   } else if (typeof url === "object" && typeof url.api !== "undefined") {
     api.push(...url.api);
@@ -75,7 +72,7 @@ const requeset = (key: string) => {
       url = url + "/" + api[i];
     }
     apis[api[i]] = (item: { [key: string]: string }) => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         const res = axios
           .request(config(url, item, method[i]))
           .then((res: { data: object }) => {
@@ -95,4 +92,5 @@ const apis: apis = {};
 for (const key in urls) {
   apis[key] = requeset(key);
 }
+
 export default apis;

@@ -1,5 +1,7 @@
 package org.yotars.liyuanmovies.db.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -13,6 +15,7 @@ public class Room {
     /**
      * 放映厅id
      */
+    @TableId(value = "rId", type = IdType.AUTO)
     private Integer rId;
     /**
      * 放映厅名称

@@ -1,6 +1,6 @@
 .title-header {
   position: relative;
-  width: 100vw;
+  /* width: 100vw; */
   height: 60px;
   background-color: rgba(35, 205, 218, 0.133);
   text-align: center;
@@ -21,5 +21,16 @@
   }
 }
 .menu {
-  height: calc(100vh - 60px);
+  height: 100vh;
+  /* background-color: rgba(255, 255, 255, 0.836); */
+  .menu-item {
+    display: flex;
+    .menu-log {
+      margin: auto;
+      height: 55px;
+    }
+  }
+}
+.input-search {
+  width: 500px;
 }

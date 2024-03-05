@@ -74,7 +74,8 @@ public class InfoController {
      */
     @DeleteMapping
     public Map delete(Info info) {
-        return s.delete(info.getUId());
+        System.out.println(info.getUId());
+        return s.delete(info);
     }
 }
 

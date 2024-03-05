@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  color: #333;
+  min-width: 1226px;
+  background-color: rgb(235, 235, 235);
+}
+/* 通用容器 */
+.container {
+  min-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #fff;
+}
+.centreBox {
+  display: flex;
+  .centre {
+    margin: 0 auto;
+  }
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: #333;
+}
+a:hover {
+  color: #f40;
+}
+.fClear {
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .fl {
+    float: left;
+  }
+  .fr {
+    float: right;
+  }
+}
