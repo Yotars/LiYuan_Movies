@@ -58,7 +58,8 @@ const requeset = (key: string) => {
       api.splice(index, 1);
       method.splice(index, 1);
     }
-  } else if (typeof url === "object" && typeof url.api !== "undefined") {
+  }
+  if (typeof url === "object" && typeof url.api !== "undefined") {
     api.push(...url.api);
   }
 

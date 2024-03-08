@@ -10,7 +10,11 @@
       </div>
 
       <div class="centreBox card-box">
-        <div v-for="(i, index) in data.room" class="centre card" @click="info(i.mId)" :key="index">
+        <div
+          v-for="(i, index) in data.room"
+          class="centre card"
+          @click="info(i.mId)"
+          :key="index">
           <img
             style="width: 200px; height: 300px"
             :src="`src/assets/img/${i.mImage}`" />
@@ -95,16 +99,16 @@ getRoom();
 }
 .box {
   margin-top: 20px;
-  height: 800px;
-  width: 1200px;
+  width: 1000px;
   background-color: #fff;
   padding: 10px;
   border-radius: 20px;
   filter: drop-shadow(0 0 10px #000000);
   .card-box {
-    height: 690px;
-    flex-wrap: wrap;
+    height: 350px;
+    flex-direction: row;
     .card {
+      flex: 0 0 20%;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 25px;

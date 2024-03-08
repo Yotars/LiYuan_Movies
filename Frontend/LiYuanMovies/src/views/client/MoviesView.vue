@@ -16,14 +16,17 @@
         <el-input
           v-model="query.mName"
           style="width: 500px"
-          placeholder="输入电影名" />
-        <el-button type="primary" @click="getMovies()">搜索</el-button>
+          placeholder="输入电影名">
+          <template #append>
+            <el-button type="primary" @click="getMovies()">搜索</el-button>
+          </template>
+        </el-input>
       </div>
 
-      <div class="centreBox card-box">
+      <div class="fClear card-box">
         <div
           v-for="(i, index) in data.movies"
-          class="centre card"
+          class="fl card"
           @click="info(i.mId)"
           :key="index">
           <img
@@ -140,10 +143,9 @@ watchEffect(() => {
   filter: drop-shadow(0 0 10px #000000);
   .card-box {
     height: 690px;
-    flex-wrap: wrap;
     .card {
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 1.5%;
+      margin-right: 1.5%;
       margin-bottom: 25px;
       margin-top: 20px;
     }

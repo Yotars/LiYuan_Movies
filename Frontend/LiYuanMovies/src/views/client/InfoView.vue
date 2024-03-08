@@ -14,20 +14,22 @@
             data.movies.actors
           }}</el-descriptions-item>
           <el-descriptions-item label="类型">
-            <el-tag
+            <!-- <el-tag
               v-for="i in data.movies.type.split(' / ')"
               :key="i"
               style="margin-right: 6px">
               {{ i }}
-            </el-tag>
+            </el-tag> -->
+            {{ data.movies.type }}
           </el-descriptions-item>
           <el-descriptions-item label="地区">
-            <el-tag
+            <!-- <el-tag
               v-for="i in data.movies.area.split(' / ')"
               :key="i"
               style="margin-right: 6px">
               {{ i }}
-            </el-tag>
+            </el-tag> -->
+            {{ data.movies.area }}
           </el-descriptions-item>
           <el-descriptions-item label="语言">
             {{ data.movies.language }}
@@ -71,7 +73,7 @@
         v-for="(i, index) in data.seat"
         :key="index"
         @click="button(i.sId, !i.status)">
-        {{ i.sId }}
+        {{ index }}
       </div>
     </div>
     <div class="fClear">
@@ -197,6 +199,7 @@ const open = () => {
 const isColor = ref([0]);
 
 const button = (id: string, is: boolean) => {
+  console.log(id, is);
   const index = data.form.seat.indexOf(id);
   if (is && index === -1) {
     data.form.seat.push(id);
@@ -233,7 +236,11 @@ onMounted(async () => {
   await getRoom();
   await getSeat();
 
-  for (let i = 0; i < data.seat.length; i++) {
+  const length = +data.seat[data.seat.length - 1].sId - +data.seat[0].sId;
+  for (let i = 0; i < +data.seat[0].sId - 1; i++) {
+    isColor.value.push(0);
+  }
+  for (let i = 0; i < length; i++) {
     isColor.value.push(+data.seat[i].status);
   }
   const width = dom.img.offsetWidth + dom.info.offsetWidth;

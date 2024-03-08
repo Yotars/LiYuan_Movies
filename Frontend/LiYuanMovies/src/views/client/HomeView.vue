@@ -36,10 +36,10 @@
           <router-link to="/movies"> 查看更多> </router-link>
         </span>
       </h3>
-      <div class="centreBox card-box">
+      <div class="fClear card-box">
         <div
           v-for="(i, index) in data.movies"
-          class="centre card"
+          class="fl card"
           @click="info(i.mId)"
           :key="index">
           <img
@@ -154,8 +154,8 @@ getRoom();
       height: 100%;
       flex-wrap: wrap;
       .card {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 15px;
+        margin-right: 15px;
         margin-bottom: 25px;
       }
     }
